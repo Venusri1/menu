@@ -81,22 +81,21 @@ module.exports = {
     updateCategory:async(req,res)=>{
         const id=req.params.id;
         const {name}=req.body;
-        const category=await Category.find({name:name,isDelete:false});
+        const category=await Category.findOne({name:name,isDelete:false});
         //category name validation
-        if(category.length != 0){
+        if(category){
             return res.status(400).json({message:'category was exists'})
         }else{
             //update a category
-            const category=await Category.update(id,{name:name,updatedAt:new Date()})
-            .then((err)=>{
-                if(err){
-                   return res.status(404).json({message:'failed to update'})
-                }
-              }).catch((err)=>{
-                console.log(err);
-               return res.status(404).json({error:err});
-            });
-            return  res.status(200).json({message:'success',category})
+            const category=await Category.updateOne(id,{name:name,updatedAt:new Date()})
+            .then((category)=>{
+                if(category){
+                    return  res.status(200).json({message:'success',category})
+                }else{
+                    return res.status(404).json({message:'failed to update'})
+
+                  }
+              })
         }
       
     },
@@ -104,9 +103,9 @@ module.exports = {
     deleteCategory:async(req,res)=>{
         const id=req.params.id;
         //finding item which store particular category and delete the item also
-        const items=await Items.update({category:id}).set({isDelete:true})
+        const items=await Items.updateOne({category:id}).set({isDelete:true})
    
-        const category=await Category.update(id,{isDelete:true,deletedAt:new Date()})
+        const category=await Category.updateOne(id,{isDelete:true,deletedAt:new Date()})
         .then((err)=>{
             if(err){
                return res.status(404).json({message:'failed to delete'})

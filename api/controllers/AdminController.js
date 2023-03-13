@@ -15,17 +15,29 @@ module.exports = {
     signUp:async(req,res)=>{
         const {email,password}=req.body
         const admins =await Admin.find({email:email});
+        const emailformat=/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+        const emails=emailformat.test(email)
         //email validation
         if(admins.length != 0){
             return res.status(400).json({message:'email was exists'})
         }
         else{
-            const admin= await Admin.create({email,password}).fetch();
-            if(admin){
-               return res.status(201).json({message:'success'})
+            if(!emails){
+                console.log(emails );
+                return res.status(400).json({message:'Email format was incorrect'});
+            }
+            if(password.length != 8){
+                console.log(password.length);
+                return res.status(400).json({message:'incorrect'});
             }
             else{
-               return res.status(404).json({message:'failed to signup'})
+                const admin= await Admin.create({email,password}).fetch();
+                if(admin){
+                   return res.status(201).json({message:'success'})
+                }
+                else{
+                   return res.status(404).json({message:'failed to signup'})
+                }
             }
         }
     },

@@ -39,6 +39,15 @@ module.exports.routes = {
   
   'GET /menu': 'CategoryController.menu',
   'POST /file':'FileController.upload',
+   
+  'GET /bill': 'OrderController.totalBills',
+  'POST /bill':'OrderController.bill',
+  'POST /addorder':'OrderController.addOrder',
+  'GET /bill/:id':'OrderController.billing',
+  'POST /bill/:id':'OrderController.updateOrder',
+  'GET /billing/:id':'OrderController.deleteOrder',
+
+
 
 
 

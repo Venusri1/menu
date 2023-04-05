@@ -41,8 +41,16 @@ module.exports = {
     isDelete:{
       type: 'boolean', 
       defaultsTo: false,
-
+    },
+    bill:{
+      collection:'bill',
+      via:'items',
+      through:'order'
+    },
+    order:{
+      model:'order'
     }
+    
   },
 
 

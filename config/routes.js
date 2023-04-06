@@ -47,7 +47,9 @@ module.exports.routes = {
   'POST /bill/:id':'OrderController.updateOrder',
   'GET /billing/:id':'OrderController.deleteOrder',
 
+  'PUT /hi':'OrderController.hi'
 
+ 
 
 
 
